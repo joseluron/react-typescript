@@ -1,5 +1,7 @@
 import React from 'react';
 
+import AuthenticationService from '../../services/Authentication.service';
+
 import './SignInPage.scss';
 import { ICredentials } from '../../App.types';
 
@@ -15,7 +17,24 @@ function SignInPage() {
         ev.preventDefault();
         console.log("Submitting credentials: ", credentials);
 
-        // Implement Firebase authentication
+        AuthenticationService.signIn(credentials)
+        .then(userCredentials => {
+            console.log("Signed in user: ", userCredentials);
+        })
+        .catch(err => {
+            console.error("Could not sign in the user: ", err);
+        })
+    }
+
+    function signInWithGoogle() {
+        console.log("Signing in with google");
+        AuthenticationService.signInWithGoogle()
+        .then(userCredentials => {
+            console.log("Signed in with google: ", userCredentials);
+        })
+        .catch(err => {
+            console.error("Could not sign in with google");
+        })
     }
 
     return (
@@ -42,6 +61,7 @@ function SignInPage() {
                     }
                     <button type="submit">Sign in</button>
                 </form>
+                <button onClick={signInWithGoogle}>Sign in with Google</button>
             </div>
         </div>
     );
