@@ -7,14 +7,15 @@ import AppConstants from '../../App.constants';
 
 interface IProtectedRouteProps {
     path: string,
-    component: any
+    component: any,
+    exact?: any
     authenticatedUser?: IAuthenticationState
 }
 
 const ProtectedRoute = ({path, component: Component, authenticatedUser, ...rest}: IProtectedRouteProps) => {
     return (
         <Route path={path} {...rest} render = {props => (
-            (authenticatedUser && (authenticatedUser.userCredential != null)) ? (
+            (authenticatedUser && (authenticatedUser.user != null)) ? (
                 <Component {...props} />
             ) : (
                 <Redirect to={{

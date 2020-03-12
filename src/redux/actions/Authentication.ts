@@ -1,7 +1,7 @@
 import AuthenticationService from '../../services/Authentication.service';
 import AppConstants from '../../App.constants';
 import { ICredentials, USER_FETCHING, USER_FETCH_SUCCESS, USER_FETCH_ERROR, USER_SIGNING_OUT, USER_SIGN_OUT_SUCCESS, USER_SIGN_OUT_ERROR, IProtectedLocation } from '../../App.types';
-import { UserCredential } from '@firebase/auth-types';
+import { User } from '@firebase/auth-types';
 import { History } from 'history';
 
 //
@@ -12,10 +12,10 @@ const userSigningIn = () => {
         type: USER_FETCHING,
     }
 }
-const userSignedIn = (userCredential: UserCredential) => {
+const userSignedIn = (user: User | null) => {
     return {
         type: USER_FETCH_SUCCESS,
-        userCredential
+        user
     }
 }
 const userSignedInError = () => {
@@ -47,7 +47,7 @@ export const signIn = (credentials: ICredentials, history: History, location: IP
     return AuthenticationService.signIn(credentials)
     .then((userCredential) => {
         console.log('Signed user in: ', userCredential);
-        dispatch(userSignedIn(userCredential));
+        dispatch(userSignedIn(userCredential.user));
         if (location.state && location.state.from) {
             history.push(location.state.from);
         } else {
@@ -64,7 +64,7 @@ export const signInWithGoogle = (history: History, location: IProtectedLocation)
     return AuthenticationService.signInWithGoogle()
     .then((userCredential) => {
         console.log('Signed user in with google: ', userCredential);
-        dispatch(userSignedIn(userCredential));
+        dispatch(userSignedIn(userCredential.user));
         if (location.state && location.state.from) {
             history.push(location.state.from);
         } else {
@@ -88,4 +88,8 @@ export const signOut = (history: History) => (dispatch: any) => {
         console.error('Could not sign user out : ', err);
         dispatch(userSignedOutError());
     })
+}
+
+export const isUserSignedIn = (currentUser: User | null) => (dispatch: any) => {
+    dispatch(userSignedIn(currentUser));
 }

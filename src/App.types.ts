@@ -1,3 +1,4 @@
+import { User } from '@firebase/auth-types';
 import { Location } from 'history';
 
 export interface ICredentials {
@@ -11,7 +12,7 @@ export interface IAppState {
 
 export interface IAuthenticationState {
     loading: boolean,
-    userCredential: any
+    user: User | null
 }
 
 export const USER_FETCHING = 'USER_FETCHING';
@@ -23,7 +24,7 @@ export const USER_SIGN_OUT_ERROR = 'USER_SIGN_OUT_ERROR';
 
 export interface IAuthenticationAction {
     type: string,
-    userCredential?: any
+    user?: User | null
 }
 
 export interface IProtectedLocation extends Location {

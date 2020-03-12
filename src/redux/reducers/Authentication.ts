@@ -2,7 +2,7 @@ import { IAuthenticationState, IAuthenticationAction, USER_FETCHING, USER_FETCH_
 
 const initialAuthenticationState: IAuthenticationState = {
     loading: false,
-    userCredential: null
+    user: null
 }
 
 export default function authentication(state = initialAuthenticationState, action: IAuthenticationAction) {
@@ -11,13 +11,13 @@ export default function authentication(state = initialAuthenticationState, actio
             return {
                 ...state,
                 loading: true,
-                userCredential: null
+                user: null
             }
         case USER_FETCH_SUCCESS:
             return {
                 ...state,
                 loading: false,
-                userCredential: action.userCredential
+                user: action.user
             }
         case USER_FETCH_ERROR:
             return {
@@ -33,7 +33,7 @@ export default function authentication(state = initialAuthenticationState, actio
             return {
                 ...state,
                 loading: false,
-                userCredential: null
+                user: null
             }
         case USER_SIGN_OUT_ERROR:
             return {
