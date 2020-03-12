@@ -1,40 +1,36 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
-import AuthenticationService from '../../services/Authentication.service';
+import { signIn, signInWithGoogle } from '../../redux/actions/Authentication';
 
 import './SignInPage.scss';
 import { ICredentials } from '../../App.types';
 
-function SignInPage() {
+interface ISignInPageProps {
+    signIn: Function,
+    signInWithGoogle: Function,
+}
+
+const SignInPage = (props: ISignInPageProps) => {
     const [credentials, setCredentials] = React.useState<ICredentials>({ email: '', password: '' });
 
-    function onChange(ev: React.ChangeEvent<HTMLInputElement>) {
+    const onChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
         const actualCredentials = { ...credentials };
         setCredentials({ ...actualCredentials, [ev.target.name]: ev.target.value});
     }
 
-    function onSubmit(ev: React.FormEvent<HTMLFormElement>) {
+    const onSubmit = (ev: React.FormEvent<HTMLFormElement>) => {
         ev.preventDefault();
-        console.log("Submitting credentials: ", credentials);
+        console.log('Submitting credentials: ', credentials);
 
-        AuthenticationService.signIn(credentials)
-        .then(userCredentials => {
-            console.log("Signed in user: ", userCredentials);
-        })
-        .catch(err => {
-            console.error("Could not sign in the user: ", err);
-        })
+        props.signIn(credentials);
+
     }
 
-    function signInWithGoogle() {
-        console.log("Signing in with google");
-        AuthenticationService.signInWithGoogle()
-        .then(userCredentials => {
-            console.log("Signed in with google: ", userCredentials);
-        })
-        .catch(err => {
-            console.error("Could not sign in with google");
-        })
+    const signInWithGoogle = () => {
+        console.log('Signing in with google');
+        
+        props.signInWithGoogle();
     }
 
     return (
@@ -67,4 +63,4 @@ function SignInPage() {
     );
 }
 
-export default SignInPage;
+export default connect(null, { signIn, signInWithGoogle })(SignInPage);
