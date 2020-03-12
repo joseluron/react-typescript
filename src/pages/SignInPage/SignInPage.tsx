@@ -5,8 +5,9 @@ import { signIn, signInWithGoogle } from '../../redux/actions/Authentication';
 
 import './SignInPage.scss';
 import { ICredentials } from '../../App.types';
+import { RouteComponentProps } from 'react-router-dom';
 
-interface ISignInPageProps {
+interface ISignInPageProps extends RouteComponentProps {
     signIn: Function,
     signInWithGoogle: Function,
 }
@@ -23,14 +24,13 @@ const SignInPage = (props: ISignInPageProps) => {
         ev.preventDefault();
         console.log('Submitting credentials: ', credentials);
 
-        props.signIn(credentials);
-
+        props.signIn(credentials, props.history);
     }
 
     const signInWithGoogle = () => {
         console.log('Signing in with google');
         
-        props.signInWithGoogle();
+        props.signInWithGoogle(props.history);
     }
 
     return (

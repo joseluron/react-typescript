@@ -10,7 +10,8 @@ export default function authentication(state = initialAuthenticationState, actio
         case USER_FETCHING:
             return {
                 ...state,
-                loading: true
+                loading: true,
+                userCredential: null
             }
         case USER_FETCH_SUCCESS:
             return {
