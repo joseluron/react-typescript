@@ -1,3 +1,5 @@
+import { Location } from 'history';
+
 export interface ICredentials {
     email: string,
     password: string
@@ -22,4 +24,10 @@ export const USER_SIGN_OUT_ERROR = 'USER_SIGN_OUT_ERROR';
 export interface IAuthenticationAction {
     type: string,
     userCredential?: any
+}
+
+export interface IProtectedLocation extends Location {
+    state: {
+        from: string
+    }
 }

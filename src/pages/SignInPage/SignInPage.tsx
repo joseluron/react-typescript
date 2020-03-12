@@ -24,13 +24,13 @@ const SignInPage = (props: ISignInPageProps) => {
         ev.preventDefault();
         console.log('Submitting credentials: ', credentials);
 
-        props.signIn(credentials, props.history);
+        props.signIn(credentials, props.history, props.location);
     }
 
     const signInWithGoogle = () => {
         console.log('Signing in with google');
         
-        props.signInWithGoogle(props.history);
+        props.signInWithGoogle(props.history, props.location);
     }
 
     return (
