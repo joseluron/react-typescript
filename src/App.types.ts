@@ -7,12 +7,26 @@ export interface ICredentials {
 }
 
 export interface IAppState {
-    authenticatedUser: IAuthenticationState
+    authenticatedUser: IAuthenticationState,
+    users: IUsersState
 }
 
 export interface IAuthenticationState {
     loading: boolean,
     user: User | null
+}
+
+export interface IUsersState {
+    loading: boolean,
+    fetched: boolean,
+    users: Array<IUser> | null
+}
+
+export interface IUser {
+    id: number,
+    name: string,
+    username: string,
+    email: string
 }
 
 export const USER_FETCHING = 'USER_FETCHING';
@@ -27,8 +41,17 @@ export interface IAuthenticationAction {
     user?: User | null
 }
 
+export interface IUsersAction {
+    type: string,
+    users: Array<IUser> | null
+}
+
 export interface IProtectedLocation extends Location {
     state: {
         from: string
     }
 }
+
+export const DATA_FETCHING = 'DATA_FETCHING';
+export const DATA_FECTH_SUCCESS = 'DATA_FECTH_SUCCESS';
+export const DATA_FETCH_ERROR = 'DATA_FETCH_ERROR';

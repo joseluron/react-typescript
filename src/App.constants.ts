@@ -13,6 +13,8 @@ class AppConstants {
             path: AppConstants.PAGE_URL_SETTINGS
         }
     ];
+
+    public static readonly DATA_URL = 'https://jsonplaceholder.typicode.com/users';
 }
 
 export default AppConstants;
