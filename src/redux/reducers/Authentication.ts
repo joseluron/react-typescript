@@ -2,16 +2,18 @@ import { IAuthenticationState, IAuthenticationAction, USER_FETCHING, USER_FETCH_
 
 const initialAuthenticationState: IAuthenticationState = {
     loading: false,
-    user: null
+    user: null,
+    error: null
 }
 
-export default function authentication(state = initialAuthenticationState, action: IAuthenticationAction) {
+export default function authentication(state = initialAuthenticationState, action: IAuthenticationAction): object {
     switch (action.type) {
         case USER_FETCHING:
             return {
                 ...state,
                 loading: true,
-                user: null
+                user: null,
+                error: null
             }
         case USER_FETCH_SUCCESS:
             return {
@@ -22,7 +24,8 @@ export default function authentication(state = initialAuthenticationState, actio
         case USER_FETCH_ERROR:
             return {
                 ...state,
-                loading: false
+                loading: false,
+                error: action.error
             }
         case USER_SIGNING_OUT:
             return {

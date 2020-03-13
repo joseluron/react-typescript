@@ -1,42 +1,41 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { RouteComponentProps } from 'react-router-dom';
 
 import NavigationHeader from '../../components/NavigationHeader/NavigationHeader';
+import UserList from '../../components/UserList/UserList';
 import { getData } from '../../redux/actions/Users';
 
+import './SettingsPage.scss';
 import { IAppState, IUsersState, IAuthenticationState } from '../../App.types';
+import { Location } from 'history';
 
-interface ISettingsPageProps {
-    getData: Function,
-    authenticatedUser: IAuthenticationState,
-    users: IUsersState
+interface ISettingsPageProps extends RouteComponentProps {
+    getData: Function;
+    authenticatedUser: IAuthenticationState;
+    users: IUsersState;
+    location: Location;
 }
 
-const SettingsPage = (props: ISettingsPageProps) => {
+const SettingsPage = (props: ISettingsPageProps): JSX.Element => {
 
     React.useEffect(() => {
-        if (!props.users.fetched) {
+        document.title = 'Settings';
+        
+        if (!props.users.fetched && !props.users.loading) {
             if (props.authenticatedUser && props.authenticatedUser.user) {
                 props.getData(props.authenticatedUser.user.refreshToken);
             }
         }
-    }, [props.users.fetched])
+    })
 
     return (
-        <div className="settings-page-container">
-            <NavigationHeader />
-            <h1>Settings</h1>
-            {
-                !props.users.loading ? (
-                    props.users && props.users.users ? (
-                        props.users.users.map(user => <span key={user.id}>{user.name}</span>)
-                    ) : (
-                        <span>No users in the system</span>
-                    )
-                ) : (
-                    <span>Loading...</span>
-                )
-            }
+        <div className="settings-page-container page-background">
+            <NavigationHeader location={props.location} />
+            <div className="page-container">
+                <h1>Settings</h1>
+                <UserList users={props.users} />
+            </div>
         </div>
     );
 }

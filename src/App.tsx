@@ -12,10 +12,10 @@ import { isUserSignedIn } from './redux/actions/Authentication';
 import './App.scss';
 
 interface IAppProps {
-    isUserSignedIn: Function
+    isUserSignedIn: Function;
 }
 
-const App = (props: IAppProps) => {
+const App = (props: IAppProps): JSX.Element => {
     const [loading, setLoading] = React.useState(true);
     
     React.useEffect(() => {
@@ -31,16 +31,16 @@ const App = (props: IAppProps) => {
     
     return (
         !loading ? (
-        <BrowserRouter>
-            <div className="app-container">
-                <Route path={AppConstants.PAGE_URL_SIGN_IN} exact component={SignInPage}/>
-                <ProtectedRoute exact path={AppConstants.PAGE_URL_DASHBOARD} component={DashboardPage}/>
-                <ProtectedRoute path={AppConstants.PAGE_URL_SETTINGS} component={SettingsPage}/>
-            </div>
-        </BrowserRouter>
+            <BrowserRouter>
+                <div className="app-container page-background">
+                    <Route path={AppConstants.PAGE_URL_SIGN_IN} exact component={SignInPage}/>
+                    <ProtectedRoute exact path={AppConstants.PAGE_URL_DASHBOARD} component={DashboardPage}/>
+                    <ProtectedRoute path={AppConstants.PAGE_URL_SETTINGS} component={SettingsPage}/>
+                </div>
+            </BrowserRouter>
         ) : (
-            <div className="app-container">
-                <h1>Loading data...</h1>
+            <div className="app-container page-background">
+                <h1 className="loading-banner">Loading...</h1>
             </div>
         )
     );

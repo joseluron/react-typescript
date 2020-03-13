@@ -6,7 +6,7 @@ const initialUsersState: IUsersState = {
     users: null,
 }
 
-export default function users(state = initialUsersState, action: IUsersAction) {
+export default function users(state = initialUsersState, action: IUsersAction): object {
     switch (action.type) {
         case DATA_FETCHING:
             return {

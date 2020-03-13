@@ -7,10 +7,10 @@ class AuthenticationService {
     public signIn = (credentials: ICredentials): Promise<UserCredential> =>
         firebaseAuth.signInWithEmailAndPassword(credentials.email, credentials.password);
     
-    public signInWithGoogle = ():Promise<UserCredential> =>
+    public signInWithGoogle = (): Promise<UserCredential> =>
         firebaseAuth.signInWithPopup(googleProvider);
 
-    public signOut = ():Promise<void> =>
+    public signOut = (): Promise<void> =>
         firebaseAuth.signOut();
 }
 

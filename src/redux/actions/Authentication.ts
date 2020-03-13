@@ -3,37 +3,39 @@ import AppConstants from '../../App.constants';
 import { ICredentials, USER_FETCHING, USER_FETCH_SUCCESS, USER_FETCH_ERROR, USER_SIGNING_OUT, USER_SIGN_OUT_SUCCESS, USER_SIGN_OUT_ERROR, IProtectedLocation } from '../../App.types';
 import { User } from '@firebase/auth-types';
 import { History } from 'history';
+import { Store, AnyAction } from 'redux';
 
 //
 // DISPATCHERS
 //
-const userSigningIn = () => {
+const userSigningIn = (): AnyAction => {
     return {
         type: USER_FETCHING,
     }
 }
-const userSignedIn = (user: User | null) => {
+const userSignedIn = (user: User | null): AnyAction => {
     return {
         type: USER_FETCH_SUCCESS,
         user
     }
 }
-const userSignedInError = () => {
+const userSignedInError = (error: string): AnyAction => {
     return {
-        type: USER_FETCH_ERROR
+        type: USER_FETCH_ERROR,
+        error
     }
 }
-const userSigningOut = () => {
+const userSigningOut = (): AnyAction => {
     return {
         type: USER_SIGNING_OUT
     }
 }
-const userSignedOut = () => {
+const userSignedOut = (): AnyAction => {
     return {
         type: USER_SIGN_OUT_SUCCESS
     }
 }
-const userSignedOutError = () => {
+const userSignedOutError = (): AnyAction => {
     return {
         type: USER_SIGN_OUT_ERROR
     }
@@ -42,7 +44,7 @@ const userSignedOutError = () => {
 //
 // ACTIONS
 //
-export const signIn = (credentials: ICredentials, history: History, location: IProtectedLocation) => (dispatch: any) => {
+export const signIn = (credentials: ICredentials, history: History, location: IProtectedLocation): Function => (dispatch: Store['dispatch']): Promise<void> => {
     dispatch(userSigningIn());
     return AuthenticationService.signIn(credentials)
     .then((userCredential) => {
@@ -56,10 +58,10 @@ export const signIn = (credentials: ICredentials, history: History, location: IP
     })
     .catch((err: Error) => {
         console.error('Could not sign user in: ', err);
-        dispatch(userSignedInError());
+        dispatch(userSignedInError(err.message));
     })
 }
-export const signInWithGoogle = (history: History, location: IProtectedLocation) => (dispatch: any) => {
+export const signInWithGoogle = (history: History, location: IProtectedLocation): Function => (dispatch: Store['dispatch']): Promise<void> => {
     dispatch(userSigningIn());
     return AuthenticationService.signInWithGoogle()
     .then((userCredential) => {
@@ -73,10 +75,10 @@ export const signInWithGoogle = (history: History, location: IProtectedLocation)
     })
     .catch((err: Error) => {
         console.error('Could not sign user in with google : ', err);
-        dispatch(userSignedInError());
+        dispatch(userSignedInError(err.message));
     })
 }
-export const signOut = (history: History) => (dispatch: any) => {
+export const signOut = (): Function => (dispatch: Store['dispatch']): Promise<void> => {
     dispatch(userSigningOut());
     return AuthenticationService.signOut()
     .then(() => {
@@ -89,6 +91,6 @@ export const signOut = (history: History) => (dispatch: any) => {
     })
 }
 
-export const isUserSignedIn = (currentUser: User | null) => (dispatch: any) => {
+export const isUserSignedIn = (currentUser: User | null): Function => (dispatch: Store['dispatch']): void => {
     dispatch(userSignedIn(currentUser));
 }
