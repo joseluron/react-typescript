@@ -82,7 +82,6 @@ export const signOut = (history: History) => (dispatch: any) => {
     .then(() => {
         console.log('Signed user out');
         dispatch(userSignedOut());
-        history.push(AppConstants.PAGE_URL_SIGN_IN);
     })
     .catch((err: Error) => {
         console.error('Could not sign user out : ', err);
