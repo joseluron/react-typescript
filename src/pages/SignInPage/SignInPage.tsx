@@ -7,6 +7,11 @@ import './SignInPage.scss';
 import { ICredentials, IAppState, IAuthenticationState } from '../../App.types';
 import { RouteComponentProps } from 'react-router-dom';
 
+import mailIcon from '../../assets/mail.svg';
+import eyeIcon from '../../assets/eye_password.svg';
+import googleIcon from '../../assets/google.svg';
+import exclamationIcon from '../../assets/exclamation.svg';
+
 interface ISignInPageProps extends RouteComponentProps {
     signIn: Function;
     signInWithGoogle: Function;
@@ -15,6 +20,7 @@ interface ISignInPageProps extends RouteComponentProps {
 
 const SignInPage = (props: ISignInPageProps): JSX.Element => {
     const [credentials, setCredentials] = React.useState<ICredentials>({ email: '', password: '' });
+    const [passwordType, setPasswordType] = React.useState<string>('password');
 
     React.useEffect(() => {
         document.title = 'Sign In';
@@ -38,6 +44,12 @@ const SignInPage = (props: ISignInPageProps): JSX.Element => {
         props.signInWithGoogle(props.history, props.location);
     }
 
+    const setPasswordVisibility = (credential: string): void => {
+        if (credential === 'password') {
+            setPasswordType(passwordType === 'password' ? 'text' : 'password');
+        }
+    }
+
     return (
         <div className="sign-in-page-container page-background">
             <div className="sign-in-form-container">
@@ -48,22 +60,33 @@ const SignInPage = (props: ISignInPageProps): JSX.Element => {
                             return (
                                 <div className="form-group" key={key}>
                                     <label htmlFor={key}>{key}</label>
-                                    <input
-                                        type={key}
-                                        id={key}
-                                        name={key}
-                                        placeholder={`Introduce your ${key}`}
-                                        value={credentials[key as keyof ICredentials]}
-                                        onChange={onChange}
-                                        disabled={props.authenticatedUser.loading}
-                                    />
+                                    <div className="input-wrapper">
+                                        <input
+                                            type={key === 'email' ? key : passwordType}
+                                            id={key}
+                                            name={key}
+                                            placeholder={`Introduce your ${key}`}
+                                            value={credentials[key as keyof ICredentials]}
+                                            onChange={onChange}
+                                            disabled={props.authenticatedUser.loading}
+                                        />
+                                        <img
+                                            src={key === 'email' ? mailIcon : eyeIcon}
+                                            alt="Icon"
+                                            onClick={(): void => setPasswordVisibility(key)}
+                                            className={key === 'password' ? 'pointer' : ''}
+                                        />
+                                    </div>
                                 </div>
                             )
                         })
                     }
-                    <button className={`sign-in-button ${props.authenticatedUser.loading && 'disabled'}`} type="submit" disabled={props.authenticatedUser.loading}>Sign in</button>
+                    <button className={`sign-in-button ${(props.authenticatedUser.loading || !credentials.email || !credentials.password) && 'disabled'}`} type="submit" disabled={props.authenticatedUser.loading || !credentials.email || !credentials.password}>Sign in</button>
                 </form>
-                <button className={`google-provider-button ${props.authenticatedUser.loading && 'disabled'}`} onClick={signInWithGoogle} disabled={props.authenticatedUser.loading}>Sign in with Google</button>
+                <button className={`google-provider-button ${props.authenticatedUser.loading && 'disabled'}`} onClick={signInWithGoogle} disabled={props.authenticatedUser.loading}>
+                    <span>Sign in with Google</span>
+                    <img src={googleIcon} alt="Google Icon" />
+                </button>
                 {props.authenticatedUser.loading &&
                     <div className="loading-spinner-container">
                         <div className="loading-spinner" />
@@ -71,7 +94,8 @@ const SignInPage = (props: ISignInPageProps): JSX.Element => {
                 }
                 {props.authenticatedUser.error &&
                     <div className="error-message">
-                        {props.authenticatedUser.error}
+                        <img src={exclamationIcon} alt="Exclamation icon" />
+                        <span>{props.authenticatedUser.error}</span>
                     </div>
                 }
             </div>
