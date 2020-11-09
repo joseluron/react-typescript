@@ -68,7 +68,7 @@
 
             .sign-in-button {
                 padding: 3px 0;
-                background: $color-primary-3;
+                background: $color-primary-4;
                 border: 1px solid $color-primary-3;
                 border-radius: 8px;
                 font-family: 'Roboto';
@@ -80,7 +80,7 @@
             }
 
             .disabled {
-                color: $color-primary-1;
+                color: $color-primary-3;
                 cursor: not-allowed;
             }
         }
@@ -90,7 +90,7 @@
             width: 100%;
             margin-top: 10px;
             padding: 3px 0;
-            background: $color-primary-3;
+            background: $color-primary-4;
             border: 1px solid $color-primary-3;
             border-radius: 8px;
             font-family: 'Roboto';
